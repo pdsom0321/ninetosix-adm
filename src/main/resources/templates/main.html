@@ -3,8 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Main page</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 </head>
-<body>
+<body onload="initPage();">
     <h1>로 그 인 성 공 ! !</h1>
 </body>
 </html>
+<script type="text/javascript">
+    function initPage() {
+       $.ajax({
+           method : "GET",
+           url : "/admins",
+           dataType: "json",
+           success : function (result) {
+               console.log(result);
+           },
+           error :function(e) {
+           }
+       });
+    }
+</script>

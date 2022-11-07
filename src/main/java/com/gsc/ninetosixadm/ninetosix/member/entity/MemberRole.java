@@ -2,17 +2,14 @@ package com.gsc.ninetosixadm.ninetosix.member.entity;
 
 import com.gsc.ninetosixadm.ninetosix.admin.entity.Admin;
 import com.gsc.ninetosixadm.ninetosix.vo.Role;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Builder
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table
 public class MemberRole {
