@@ -23,7 +23,7 @@ public class SpringSecurityConfig {
                 .httpBasic().disable()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/webjars/**",
+                .antMatchers("/images/**", "/js/**", "/css/**", "/fonts/**", "/icons/**", "/plugins/**", "/scss/**", "/webjars/**",
                         "/auth/**").permitAll()
                 .antMatchers("/main").hasAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()
@@ -52,6 +52,6 @@ public class SpringSecurityConfig {
     }
 
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web -> web.ignoring().antMatchers("/images/**", "/js/**", "/webjars/**"));
+        return (web -> web.ignoring().antMatchers("/images/**", "/js/**", "/css/**", "/fonts/**", "/icons/**", "/plugins/**", "/scss/**", "/webjars/**"));
     }
 }
