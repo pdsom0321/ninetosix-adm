@@ -1,19 +1,33 @@
 <!DOCTYPE html>
-<html lang="UTF-8">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Main page</title>
+    <title>Admin page</title>
     <script src="/js/jquery.min.js"></script>
 </head>
 <body onload="initPage();">
-    <h1>로 그 인 성 공 ! !</h1>
+    <h1>관리자 목록</h1>
 </body>
 </html>
 <script type="text/javascript">
+    const pageSize = 15;
+
     function initPage() {
+        getAdmins(0);
+    }
+
+    function getAdmins(page) {
+        /*
+        // method "POST"
+        const params = {
+            page: page,
+            size: pageSize
+        }
+        */
+
        $.ajax({
            method : "GET",
-           url : "/admins",
+           url : "/api/v1/admins?page="+page+"&size="+pageSize,
            dataType: "json",
            success : function (result) {
                console.log(result);

@@ -11,8 +11,8 @@ public class AdminViewController {
         return "login";
     }
 
-    @RequestMapping(value="/main")
+    @RequestMapping(value="/admin")
     public String main() {
-        return "main";
+        return "admin";
     }
 }

@@ -25,7 +25,7 @@ public class SpringSecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/images/**", "/js/**", "/css/**", "/fonts/**", "/icons/**", "/plugins/**", "/scss/**", "/webjars/**",
                         "/auth/**").permitAll()
-                .antMatchers("/main").hasAuthority("ROLE_ADMIN")
+                .antMatchers("/admin").hasAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()
 
                 // 시큐리티는 기본적으로 세션을 사용
@@ -39,7 +39,7 @@ public class SpringSecurityConfig {
                 .loginProcessingUrl("/loginProc")
                 .usernameParameter("id")
                 .passwordParameter("pw")
-                .defaultSuccessUrl("/main", true)
+                .defaultSuccessUrl("/admin", true)
                 .permitAll()
                 .and()
                 .userDetailsService(customUserDetailsService)
