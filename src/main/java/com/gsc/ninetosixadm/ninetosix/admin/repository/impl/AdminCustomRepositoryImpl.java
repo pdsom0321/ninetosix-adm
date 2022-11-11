@@ -32,7 +32,16 @@ public class AdminCustomRepositoryImpl implements AdminCustomRepository {
 
     @Override
     public List<Admin> findByAllAdminByPage(String keyword, Pageable pageable) {
-        List<Admin> content =jpaQueryFactory.selectFrom(admin)
+        return jpaQueryFactory.selectFrom(admin)
+                .where(
+                        containNameValue(keyword),
+                        containEmailValue(keyword)
+                )
+                .orderBy(admin.insertDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+        /*List<Admin> content =jpaQueryFactory.selectFrom(admin)
                 .orderBy(admin.insertDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -45,7 +54,7 @@ public class AdminCustomRepositoryImpl implements AdminCustomRepository {
                         containEmailValue(keyword)
                 )
                 .where(admin.in(content))
-                .fetch();
+                .fetch();*/
     }
 
     private BooleanExpression containNameValue(String value) {

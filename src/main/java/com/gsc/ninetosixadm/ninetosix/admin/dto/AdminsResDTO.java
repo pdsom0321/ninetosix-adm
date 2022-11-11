@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 public class AdminsResDTO {
+    private Long id;
     private String email;
     private String name;
     private LocalDateTime insertDate;
@@ -18,6 +19,7 @@ public class AdminsResDTO {
 
     public static AdminsResDTO getAdmins(Admin admin) {
         return AdminsResDTO.builder()
+                .id(admin.getId())
                 .email(admin.getEmail())
                 .name(admin.getName())
                 .insertDate(admin.getInsertDate())
