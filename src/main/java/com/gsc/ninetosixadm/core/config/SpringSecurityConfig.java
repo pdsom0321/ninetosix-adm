@@ -5,11 +5,11 @@ import com.gsc.ninetosixadm.core.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -18,13 +18,20 @@ public class SpringSecurityConfig {
     private final CustomUserDetailsService customUserDetailsService;
 
     @Bean
+    @Order(0)
+    public SecurityFilterChain resources(HttpSecurity http) throws Exception {
+        return http.requestMatchers(matchers -> matchers
+                .antMatchers("/images/**", "/js/**", "/css/**", "/fonts/**", "/icons/**", "/plugins/**", "/scss/**", "/webjars/**")).build();
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .httpBasic().disable()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/images/**", "/js/**", "/css/**", "/fonts/**", "/icons/**", "/plugins/**", "/scss/**", "/webjars/**",
-                        "/auth/**").permitAll()
+                .antMatchers("/webjars/**",
+                        "/login").permitAll()
                 .antMatchers("/admin").hasAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()
 
@@ -34,24 +41,20 @@ public class SpringSecurityConfig {
                 .sessionManagement()
 
                 .and()
-                .formLogin()
-                .loginPage("/login")
-                .loginProcessingUrl("/loginProc")
-                .usernameParameter("id")
-                .passwordParameter("pw")
-                .defaultSuccessUrl("/admin", true)
-                .permitAll()
+                    .formLogin()
+                    .loginPage("/login")
+                    .loginProcessingUrl("/loginProc")
+                    .usernameParameter("id")
+                    .passwordParameter("pw")
+                    .defaultSuccessUrl("/admin", true)
+                    .permitAll()
                 .and()
-                .userDetailsService(customUserDetailsService)
-                .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
+                    .userDetailsService(customUserDetailsService)
+                    .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
                 .and()
-                .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logoutProc"));
+                    .logout()
+                    .logoutSuccessUrl("/login");
 
         return http.build();
-    }
-
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web -> web.ignoring().antMatchers("/images/**", "/js/**", "/css/**", "/fonts/**", "/icons/**", "/plugins/**", "/scss/**", "/webjars/**"));
     }
 }
