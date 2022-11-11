@@ -1,39 +1,108 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Admin page</title>
-    <script src="/js/jquery.min.js"></script>
-</head>
-<body onload="initPage();">
-    <h1>관리자 목록</h1>
-</body>
+<html lagn="ko" xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+
+<th:block layout:fragment="content">
+    <!-- Begin Page Content -->
+    <h1 class="text-center">관리자 목록</h1>
+
+    <form class="d-flex">
+        <div class="col-auto">
+            <label for="searchText">
+                <input type="text" class="form-control" id="searchText" placeholder="검색어">
+            </label>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-primary mb-3" type="button" onclick="search()">검색</button>
+        </div>
+    </form>
+
+    <form class="form">
+        <div class="form-group">
+            <table class="table table-hover text-center">
+                <tr>
+                    <th>No.</th>
+                    <th>이메일</th>
+                    <th>이름</th>
+                    <th>등록일</th>
+                </tr>
+                <tbody id="tBody"></tbody>
+            </table>
+        </div>
+    </form>
+    <ul class="pagination justify-content-center" style="cursor : pointer" id="pagingParent"></ul>
+    </div>
+</th:block>
+
 </html>
 <script type="text/javascript">
-    const pageSize = 15;
+    const pageSize = 3;
 
     function initPage() {
+        document.title = '관리자 목록'
+        getAdmins(0);
+    }
+
+    function search() {
         getAdmins(0);
     }
 
     function getAdmins(page) {
-        /*
-        // method "POST"
         const params = {
             page: page,
             size: pageSize
         }
-        */
 
-       $.ajax({
-           method : "GET",
-           url : "/api/v1/admins?page="+page+"&size="+pageSize,
-           dataType: "json",
-           success : function (result) {
-               console.log(result);
-           },
-           error :function(e) {
-           }
-       });
+        $.ajax({
+            url: "/api/v1/admins",
+            method: "GET",
+            contentType: 'application/json; charset=utf-8',
+            data: params,
+            dataType: "json",
+            success: function (e) {
+                console.log(e);
+                const tBody = $('#tBody');
+                const totalCount = e.totalElements;
+                tBody.html("");
+
+                if (e.content.length > 0) {
+                    for (let i = 0; i < e.content.length; i++) {
+                        const admin = e.content[i];
+                        console.log(admin);
+                        const tr = $("<tr>").css('cursor', 'pointer')
+                            .attr('onClick', 'location.href="/admin/detail' + admin.id + '"').appendTo(tBody);
+                        $("<td>").addClass("align-middle").text(totalCount - (pageSize * page) - i).appendTo(tr);
+                        $("<td>").addClass("align-middle").text(admin.email).appendTo(tr);
+                        $("<td>").addClass("align-middle").text(admin.name).appendTo(tr);
+                        $("<td>").addClass("align-middle").text(admin.insertDate).appendTo(tr);
+                    }
+                } else {
+                    const tr = $("<tr>").appendTo(tBody);
+                    $("<td>").addClass("textCenter").attr("colspan", "4").text("등록된 데이터가 없습니다.").appendTo(tr);
+                }
+
+                const pagingBody = $("#pagingParent");
+                pagingBody.html("");
+
+                let totalPageCnt = (totalCount % pageSize === 0) ? totalCount / pageSize : (totalCount / pageSize) + 1;
+                totalPageCnt = parseInt(totalPageCnt);
+
+                for (let i = 0; i < totalPageCnt; i++) {
+                    const li = i === page ? $("<li>").addClass("page-item").addClass("active") : $("<li>").addClass("page-item");
+                    li.append($("<a>").addClass("page-link").text(i + 1))
+                        .bind("click", i, function (ee) {
+                            const page2 = ee.data;
+                            getAdmins(page2);
+                        }).appendTo(pagingBody);
+                }
+            },
+            error: function (e) {
+                alert('통신 실패 !!');
+            }
+        });
+    }
+
+    function logout() {
+        location.href = "/logoutProc";
     }
 </script>

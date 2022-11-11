@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lagn="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<!-- 공통 헤더-->
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Start CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <!-- End CSS -->
+</head>
+
+<body class="xp-vertical" onload="initPage();">
+
+<div class="xp-container">
+    <!-- Start XP Leftbar -->
+    <div class="xp-leftbar">
+        <!-- Start XP Sidebar -->
+        <div class="xp-sidebar">
+
+            <!-- Start XP Logobar -->
+            <div class="xp-logobar text-center">
+                <a href="/admin" class="xp-logo"><img src="/images/0918.PNG" class="img-fluid" alt="logo"></a>
+            </div>
+            <!-- End XP Logobar -->
+
+            <!-- Start XP Navigationbar -->
+            <div class="xp-navigationbar">
+                <ul class="xp-vertical-menu">
+                    <li class="xp-vertical-header">ㅁ ㅔ 뉴 !</li>
+                    <li></li>
+                </ul>
+            </div>
+            <!-- End XP Navigationbar -->
+
+        </div>
+        <!-- End XP Sidebar -->
+    </div>
+    <!-- End XP Leftbar -->
+
+    <div class="xp-rightbar">
+
+        <div class="xp-topbar"></div>
+
+        <!-- Start XP Breadcrumbbar -->
+        <div class="xp-breadcrumbbar text-center">
+            <h4 class="page-title">0918 NineToSix 관리자 사이트</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Booster</a></li>
+                <li class="breadcrumb-item"><a href="#">Tables</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Bootstrap Table</li>
+            </ol>
+
+            <div class="text-right">
+                <form method="POST" th:action="@{/logout}">
+                    <input type="submit" class="btn btn-dark" value="로그아웃">
+                </form>
+            </div>
+        </div>
+        <!-- End XP Breadcrumbbar -->
+
+        <div class="xp-contentbar">
+            <th:block layout:fragment="content"></th:block>
+        </div>
+
+        <!-- Start XP Footerbar -->
+        <div class="xp-footerbar">
+            <footer class="footer">
+                <p class="mb-0">© 2022 Booster - Designed with <i class="mdi mdi-heart-multiple text-danger"></i> by 우리들
+                </p>
+            </footer>
+        </div>
+        <!-- End XP Footerbar -->
+
+    </div>
+    <!-- End XP Rightbar -->
+</div>
+<!-- End XP Container -->
+
+<!-- Start JS -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<!-- End JS -->
+
+</body>
+</html>
