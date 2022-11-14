@@ -1,7 +1,9 @@
 package com.gsc.ninetosixadm.ninetosix.admin.service;
 
+import com.gsc.ninetosixadm.ninetosix.admin.dto.AdminResDTO;
 import com.gsc.ninetosixadm.ninetosix.admin.dto.AdminsReqDTO;
 import com.gsc.ninetosixadm.ninetosix.admin.dto.AdminsResDTO;
+import com.gsc.ninetosixadm.ninetosix.admin.entity.Admin;
 import com.gsc.ninetosixadm.ninetosix.admin.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.module.FindException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,5 +31,11 @@ public class AdminService {
                 .map(AdminsResDTO::getAdmins)
                 .collect(Collectors.toList());
         return new PageImpl<>(content, pageable, count);
+    }
+
+    public AdminResDTO getAdmin(Long id) {
+        Admin admin = adminRepository.findById(id)
+                .orElseThrow(() -> new FindException("관리자를 찾을 수 없습니다."));
+        return AdminResDTO.getAdmin(admin);
     }
 }

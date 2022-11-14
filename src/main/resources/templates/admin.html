@@ -3,7 +3,6 @@
       layout:decorate="~{layout/default_layout}">
 
 <th:block layout:fragment="content">
-
     <!-- Start XP Row -->
     <div class="row">
         <!-- Start XP Col -->
@@ -50,7 +49,6 @@
 
     </div>
     <!-- End XP Row -->
-
 </th:block>
 
 </html>
@@ -118,8 +116,8 @@
                         }).appendTo(pagingBody);
                 }
             },
-            error: function (e) {
-                alert('통신 실패 !!');
+            error:function(request,status,error){
+                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
             }
         });
     }
