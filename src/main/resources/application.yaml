@@ -13,6 +13,8 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  thymeleaf:
+    cache: false
 logging:
   level:
     org:
