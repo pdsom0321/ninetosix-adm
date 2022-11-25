@@ -26,4 +26,12 @@ public class AdminViewController {
         mv.setViewName("/detail");
         return mv;
     }
+
+    @GetMapping(value="/admin/update/{id}")
+    public ModelAndView modify(@PathVariable Long id) {
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("id", id);
+        mv.setViewName("/update");
+        return mv;
+    }
 }

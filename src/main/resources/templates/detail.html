@@ -10,7 +10,7 @@
             <div class="card m-b-30">
 
                 <div class="card-header bg-white">
-                    <h2 class="text-center text-black">관리자 상세</h2>
+                    <h2 class="text-center mt-3 mb-5">관리자 상세</h2>
                     <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6>
                 </div>
 
@@ -50,9 +50,10 @@
                         </table>
                     </div>
 
-                    <div class="btn-group dropdown-btn-group pull-right">
-                        <button type="button" class="btn btn-dark" onclick="goList()">목록</button>
-                        <button type="button" class="btn btn-dark" onclick="">수정</button>
+                    <div class="btn-group pull-right ">
+                        <button class="btn btn-dark" type="button" onclick="goList()">목록</button>
+                        <button class="btn btn-dark" type="button" onclick="update()">수정</button>
+                        <button class="btn btn-dark" type="button" onclick="goDelete()">삭제</button>
                     </div>
                 </div>
             </div>
@@ -97,5 +98,27 @@
 
     function goList() {
         location.href = "/admin";
+    }
+
+    function update() {
+        const id = $('[name="adminId"]').val();
+        location.href = "/admin/update/"+id;
+    }
+
+    function goDelete() {
+        const id = $('[name="adminId"]').val();
+        if(confirm("삭제하시겠습니까?")) {
+            $.ajax({
+                url : "/api/v1/admin/" + id,
+                method: "DELETE",
+                success : function(e) {
+                    alert("삭제되었습니다.");
+                    goList();
+                },
+                error:function(request,status,error){
+                    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                }
+            });
+        }
     }
 </script>

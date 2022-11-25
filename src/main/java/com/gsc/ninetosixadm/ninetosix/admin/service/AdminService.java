@@ -1,6 +1,7 @@
 package com.gsc.ninetosixadm.ninetosix.admin.service;
 
 import com.gsc.ninetosixadm.ninetosix.admin.dto.AdminResDTO;
+import com.gsc.ninetosixadm.ninetosix.admin.dto.AdminUpdateReqDTO;
 import com.gsc.ninetosixadm.ninetosix.admin.dto.AdminsReqDTO;
 import com.gsc.ninetosixadm.ninetosix.admin.dto.AdminsResDTO;
 import com.gsc.ninetosixadm.ninetosix.admin.entity.Admin;
@@ -10,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,5 +40,21 @@ public class AdminService {
         Admin admin = adminRepository.findById(id)
                 .orElseThrow(() -> new FindException("관리자를 찾을 수 없습니다."));
         return AdminResDTO.getAdmin(admin);
+    }
+
+    @Transactional
+    public ResponseEntity updateAdmin(Long id, AdminUpdateReqDTO reqDTO) {
+        Admin admin = adminRepository.findById(id)
+                .orElseThrow(() -> new FindException("관리자를 찾을 수 없습니다."));
+        admin.updateAdmin(reqDTO);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @Transactional
+    public ResponseEntity deleteAdmin(Long id) {
+        Admin admin = adminRepository.findById(id)
+                .orElseThrow(() -> new FindException("관리자를 찾을 수 없습니다."));
+        adminRepository.delete(admin);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

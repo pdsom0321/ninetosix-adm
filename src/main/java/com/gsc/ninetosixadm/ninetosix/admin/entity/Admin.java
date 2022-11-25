@@ -1,7 +1,9 @@
 package com.gsc.ninetosixadm.ninetosix.admin.entity;
 
+import com.gsc.ninetosixadm.ninetosix.admin.dto.AdminUpdateReqDTO;
 import com.gsc.ninetosixadm.ninetosix.member.entity.MemberRole;
 import com.gsc.ninetosixadm.ninetosix.vo.YNCode;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -54,4 +56,10 @@ public class Admin {
 
     @Transient
     private static Integer INIT_LOGIN_FAIL_CNT = 0;
+
+    @Builder
+    public void updateAdmin(AdminUpdateReqDTO reqDTO) {
+        this.name = reqDTO.getName();
+        this.contact = reqDTO.getContact();
+    }
 }
