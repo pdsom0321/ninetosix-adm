@@ -26,14 +26,16 @@ import java.util.stream.Collectors;
 public class AdminService {
     private final AdminRepository adminRepository;
 
-    public Page<AdminsResDTO> getAdmins(AdminsReqDTO reqDTO) {
-        Pageable pageable = PageRequest.of(reqDTO.getPage(), reqDTO.getSize());
+    public AdminsResDTO getAdmins(AdminsReqDTO reqDTO) {
+        Pageable pageable = PageRequest.of(reqDTO.getPage(), reqDTO.getLength());
 
         Long count = adminRepository.findByAllAdminByCount(reqDTO.getKeyword());
-        List<AdminsResDTO> content = adminRepository.findByAllAdminByPage(reqDTO.getKeyword(), pageable).stream()
-                .map(AdminsResDTO::getAdmins)
+        List<Admin> content = adminRepository.findByAllAdminByPage(reqDTO.getKeyword(), pageable).stream()
+                .map(item -> Admin.of(item.getEmail(), item.getName(), item.getContact(), item.getInsertDate(), item.getInsertId(), item.getUpdateDate(), item.getUpdateId()))
                 .collect(Collectors.toList());
-        return new PageImpl<>(content, pageable, count);
+        Integer draw = reqDTO.getDraw();
+
+        return AdminsResDTO.getAdmins(content, draw, count.intValue(), count.intValue());
     }
 
     public AdminResDTO getAdmin(Long id) {

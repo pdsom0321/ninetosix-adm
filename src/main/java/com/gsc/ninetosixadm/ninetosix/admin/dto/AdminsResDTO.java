@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter @Builder
 public class AdminsResDTO {
@@ -16,7 +17,21 @@ public class AdminsResDTO {
     private LocalDateTime updateDate;
     private String updateId;
 
-    public static AdminsResDTO getAdmins(Admin admin) {
+    private List<Admin> data;
+    private Integer draw;
+    private Integer recordsTotal;
+    private Integer recordsFiltered;
+
+    public static AdminsResDTO getAdmins(List<Admin> data, Integer draw, Integer recordsTotal, Integer recordsFiltered) {
+        return AdminsResDTO.builder()
+                .data(data)
+                .draw(draw)
+                .recordsTotal(recordsTotal)
+                .recordsFiltered(recordsFiltered)
+                .build();
+    }
+
+    /*public static AdminsResDTO getAdmins(Admin admin) {
         return AdminsResDTO.builder()
                 .id(admin.getId())
                 .email(admin.getEmail())
@@ -26,5 +41,5 @@ public class AdminsResDTO {
                 .updateDate(admin.getUpdateDate())
                 .updateId(admin.getUpdateId())
                 .build();
-    }
+    }*/
 }

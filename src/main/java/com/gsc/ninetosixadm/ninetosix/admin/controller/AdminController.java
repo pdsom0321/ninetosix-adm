@@ -20,7 +20,7 @@ public class AdminController {
     private final AdminService adminService;
 
     @GetMapping("/admins")
-    public ResponseEntity<Page<AdminsResDTO>> getAdmins(AdminsReqDTO reqDTO) {
+    public ResponseEntity<AdminsResDTO> getAdmins(AdminsReqDTO reqDTO) {
         return ResponseEntity.ok(adminService.getAdmins(reqDTO));
     }
 
