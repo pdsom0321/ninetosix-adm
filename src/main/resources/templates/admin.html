@@ -40,13 +40,12 @@
 
 </html>
 <script type="text/javascript">
-    let dataTable = null;
     const pageSize = 5;
+    let dataTable = null;
+    let draw = 1;
 
     function initPage() {
         dataTable = $("#datatable").DataTable();
-        dataTable.destroy();
-
         document.title = '관리자 목록'
         getAdmins(0);
     }
@@ -56,29 +55,10 @@
     }
 
     function getAdmins(page) {
-        page = (page === undefined) ? 0 : page;
+        dataTable.destroy();
 
-        const params = {
-            page: page,
-            size: pageSize
-        }
         dataTable = $("#datatable").DataTable({
-            ajax : {
-                url: "/api/v1/admins"
-                , data: function(e){
-                    return {
-                        data : params
-                        , page : page
-                    }
-                }
-                , success : function(res){
-                    console.log(res);
-                    return {
-                        data : res.data
-                    }
-                }
-            }
-            , columns : [
+            columns : [
                 { targets : 0, "data" : "email" }
                 , { targets : 1, "data" : "name" }
                 , { targets : 2, "data" : "insertDate" }
@@ -86,6 +66,20 @@
                 , { targets : 4, "data" : "updateDate" }
                 , { targets : 5, "data" : "updateId" }
             ]
+            , ajax : {
+                url: "/api/v1/admins"
+                , data: function(e){
+                    return {
+                        size: pageSize
+                        , page : page
+                        , draw : draw
+                    }
+                }
+                , dataSrc : function(res){
+                    console.log(res);
+                    return res.data;
+                }
+            }
             // server side processing
             , serverSide : true
             , processing : true
@@ -113,7 +107,10 @@
 
         $('#datatable').on( 'page.dt', function (e) {
             page = dataTable.page.info().page;
-        } );
+            draw++;
+        });
+
+
 
     }
 </script>

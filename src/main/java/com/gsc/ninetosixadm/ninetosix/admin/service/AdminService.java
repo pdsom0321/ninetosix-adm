@@ -27,15 +27,14 @@ public class AdminService {
     private final AdminRepository adminRepository;
 
     public AdminsResDTO getAdmins(AdminsReqDTO reqDTO) {
-        Pageable pageable = PageRequest.of(reqDTO.getPage(), reqDTO.getLength());
-
+        Pageable pageable = PageRequest.of(reqDTO.getPage(), reqDTO.getSize());
         Long count = adminRepository.findByAllAdminByCount(reqDTO.getKeyword());
+
         List<Admin> content = adminRepository.findByAllAdminByPage(reqDTO.getKeyword(), pageable).stream()
                 .map(item -> Admin.of(item.getEmail(), item.getName(), item.getContact(), item.getInsertDate(), item.getInsertId(), item.getUpdateDate(), item.getUpdateId()))
                 .collect(Collectors.toList());
-        Integer draw = reqDTO.getDraw();
 
-        return AdminsResDTO.getAdmins(content, draw, count.intValue(), count.intValue());
+        return AdminsResDTO.getAdmins(content, reqDTO.getDraw(), count.intValue(), count.intValue());
     }
 
     public AdminResDTO getAdmin(Long id) {
