@@ -67,8 +67,9 @@ public class Admin {
         this.contact = reqDTO.getContact();
     }
 
-    public static Admin of(String email, String name, String contact, LocalDateTime insertDate, String insertId, LocalDateTime updateDate, String updateId){
+    public static Admin of(Long id, String email, String name, String contact, LocalDateTime insertDate, String insertId, LocalDateTime updateDate, String updateId){
        return Admin.builder()
+               .id(id)
                .email(email)
                .name(name)
                .contact(contact)

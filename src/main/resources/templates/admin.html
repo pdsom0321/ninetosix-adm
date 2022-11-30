@@ -25,6 +25,7 @@
                                 <th>등록자</th>
                                 <th>수정일</th>
                                 <th>수정자</th>
+                                <th>id</th>
                             </tr>
                             </thead>
                             <!--<tbody id="tBody"></tbody>-->
@@ -42,7 +43,7 @@
 <script type="text/javascript">
     const pageSize = 5;
     let dataTable = null;
-    let draw = 1;
+    let draw = 1; // * request draw와 response draw는 반드시 동일해야 함.
 
     function initPage() {
         dataTable = $("#datatable").DataTable();
@@ -55,8 +56,6 @@
     }
 
     function getAdmins(page) {
-        dataTable.destroy();
-
         dataTable = $("#datatable").DataTable({
             columns : [
                 { targets : 0, "data" : "email" }
@@ -65,6 +64,7 @@
                 , { targets : 3, "data" : "insertId" }
                 , { targets : 4, "data" : "updateDate" }
                 , { targets : 5, "data" : "updateId" }
+                , { targets : 6, "data" : "id", "visible" : false }
             ]
             , ajax : {
                 url: "/api/v1/admins"
@@ -76,21 +76,24 @@
                     }
                 }
                 , dataSrc : function(res){
-                    console.log(res);
                     return res.data;
                 }
             }
             // server side processing
             , serverSide : true
             , processing : true
+            // 테이블 제거 후 갱신
+            , destroy : true
             // 페이지 표시 건수
             , pageLength : 5
-            // 표시 건수기능 숨기기
+            // 표시 건수기능 사용
             , lengthChange: false
-            // 검색 기능 숨기기
-            , searching: false
+            // 검색 기능 사용
+            , searching: true
             // 정렬 기능 숨기기
             , ordering: false
+            // 반응형 테이블
+            , autoWidth : false
             // 언어 설정
             , language : {
                 emptyTable: "조회된 데이터가 없습니다."
@@ -105,12 +108,14 @@
             }
         });
 
+        $('#datatable tbody').on('click', 'tr', function(e){
+            let adminId = dataTable.row(this).data().id;
+            location.href = "/admin/detail/" + adminId;
+        });
+
         $('#datatable').on( 'page.dt', function (e) {
             page = dataTable.page.info().page;
             draw++;
         });
-
-
-
     }
 </script>

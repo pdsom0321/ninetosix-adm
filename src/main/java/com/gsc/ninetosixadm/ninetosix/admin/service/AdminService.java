@@ -31,7 +31,7 @@ public class AdminService {
         Long count = adminRepository.findByAllAdminByCount(reqDTO.getKeyword());
 
         List<Admin> content = adminRepository.findByAllAdminByPage(reqDTO.getKeyword(), pageable).stream()
-                .map(item -> Admin.of(item.getEmail(), item.getName(), item.getContact(), item.getInsertDate(), item.getInsertId(), item.getUpdateDate(), item.getUpdateId()))
+                .map(item -> Admin.of(item.getId(), item.getEmail(), item.getName(), item.getContact(), item.getInsertDate(), item.getInsertId(), item.getUpdateDate(), item.getUpdateId()))
                 .collect(Collectors.toList());
 
         return AdminsResDTO.getAdmins(content, reqDTO.getDraw(), count.intValue(), count.intValue());
