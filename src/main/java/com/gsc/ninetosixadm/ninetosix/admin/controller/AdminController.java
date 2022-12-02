@@ -7,7 +7,6 @@ import com.gsc.ninetosixadm.ninetosix.admin.dto.AdminsResDTO;
 import com.gsc.ninetosixadm.ninetosix.admin.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -13,6 +13,9 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+    hiddenmethod:
+      filter:
+        enabled: true
   thymeleaf:
     cache: false
 logging:
